@@ -1,0 +1,13 @@
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\bin\Debug\netstandard2.1\UltraScape.deps.json
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\bin\Debug\netstandard2.1\UltraScape.dll
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\bin\Debug\netstandard2.1\UltraScape.pdb
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.csproj.AssemblyReference.cache
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.AssemblyInfoInputs.cache
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.AssemblyInfo.cs
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.csproj.CoreCompileInputs.cache
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.dll
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.pdb
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\bin\Debug\netstandard2.1\UltraScape.API.dll
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\bin\Debug\netstandard2.1\UltraScape.API.pdb
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape\obj\Debug\netstandard2.1\UltraScape.csproj.Up2Date

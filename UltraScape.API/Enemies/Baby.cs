@@ -6,71 +6,129 @@ public class Baby : MonoBehaviour
 {
     public GameObject spriteObject;
 
-    public GameObject lockOnSound;
+	public Animator Animator => spriteObject.GetComponent<Animator>();
 
-    public GameObject chargeSound;
+	public GameObject lockOnSound;
 
-    public HurtZone hurtZone;
+	public GameObject chargeSound;
 
-    [Space]
-    public float chargeDistance; // in Unity units
+	public HurtZone hurtZone;
 
-    public float chargeTime; // 1 equal chargeDistance covered in 1 second
-    // currently the charge anim is loop but it dont look good, probably gonna split charge anim into two
+	[Space]
+	public float chargeDistance;
 
-    private Time? chargeStart;
+	public float chargeDuration;
 
-    public float lockOnTime; 
+	public float ChargeSpeed => chargeDistance / chargeDuration;
 
-    private Time? lockonStart;
+	private float chargeStartTime;
 
-    public float ChargeSpeed => chargeDistance / chargeTime;
+	public float TimeSinceChargeStart => Time.realtimeSinceStartup - chargeStartTime;
 
-    public BabyState BabyState{ get; private set; }
+	public float lockOnDuration;
 
-    private bool transitionIn;
+	private float lockOnStartTime;
 
-    // add runtime methods
+	public float TimeSinceLockOnStart => Time.realtimeSinceStartup - lockOnStartTime;
+
+	public float idleDuration;
+
+	private float idleStartTime;
+
+	public float TimeSinceIdleStart => Time.realtimeSinceStartup - idleStartTime;
+
+	private bool transitionIn;
+
+	public BabyState BabyState { get; private set; }
     
     void Start()
     {
         BabyState = BabyState.Idle;
-        transitionIn = true;
 
-        SyncState();
+		transitionIn = true;
 
-        hurtZone.enabled = true;
+		SyncState();
+		hurtZone.enabled = true;
     }
 
-    void Update()
-    {
-        if (!NewMovement.Instance)
-        {
-            SetState(BabyState.Idle);
-            return;
-        }
+    private void Update()
+	{
+		if (!NewMovement.Instance)
+		{
+			SetState(BabyState.Idle);
+			return;
+		}
 
-        if (BabyState == BabyState.Idle)
-        {
-            
-        }
-    }
+		switch (BabyState)
+		{
+            case BabyState.Idle:
+            {
+                if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                {
+                    if (TimeSinceIdleStart >= idleDuration)
+                    {
+                        EnterLockOn();
+                    }
+                }
+                break;
+            }
+            case BabyState.LockOn:
+                if (TimeSinceLockOnStart >= lockOnDuration)
+                {
+                    EnterCharge();
+                }
+                break;
+            case BabyState.Charge:
+                if (TimeSinceChargeStart >= chargeDuration)
+                {
+                    EnterIdle();
+                }
+                break;
+            default:
+                SetState(BabyState.Idle);
+                ResetCooldowns();
+                break;
+		}
+	}
 
-    void FixedUpdate()
-    {
-        
-    }
+    private void FixedUpdate()
+	{
+	}
 
-    void SyncState()
-    {
-        spriteObject.GetComponent<Animator>().SetInteger("BabyState", (int)BabyState);
-    }
+	private void SyncState()
+	{
+		Animator.SetInteger("BabyState", (int)BabyState);
+	}
 
-    void SetState(BabyState state) // primary state setter, use SyncState() to correct state desyncs between class and animator
-    {
-        BabyState = state;
-        SyncState();
-    }
+	private void SetState(BabyState state)
+	{
+		BabyState = state;
+		SyncState();
+	}
+
+	private void EnterLockOn()
+	{
+		SetState(BabyState.LockOn);
+		Instantiate(lockOnSound, gameObject.transform);
+	}
+
+	private void EnterCharge()
+	{
+		SetState(BabyState.Charge);
+		Instantiate(chargeSound, gameObject.transform);
+	}
+
+	private void EnterIdle()
+	{
+		SetState(BabyState.Idle);
+	}
+
+	private void ResetCooldowns()
+	{
+		chargeStartTime = 0f;
+		lockOnStartTime = 0f;
+		idleStartTime = 0f;
+	}
 }
 
 public enum BabyState
@@ -79,3 +137,4 @@ public enum BabyState
     LockOn,
     Charge
 }
+

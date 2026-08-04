@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <UltrakillDir>F:/Steam/steamapps/common/ULTRAKILL - Bepinex/</UltrakillDir>
+    <ModDir>$(UltrakillDir)BepInEx/plugins/UltraScape/</ModDir>
     <PublicizeAll>true</PublicizeAll>
   </PropertyGroup>
 
@@ -33,10 +34,29 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.Addressables.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.ResourceManager.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UltraScape.API\UltraScape.API.csproj" />
+    <ProjectReference Include="../UltraScape.API/UltraScape.API.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyIntoULTRAKILL" AfterTargets="Build">
+    <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.dll"
+          DestinationFolder="$(ModDir)">
+    </Copy>
+    <Copy SourceFiles="../Assets/ultrascape.bundle"
+          DestinationFolder="$(ModDir)">
+    </Copy>
+  </Target>
 
 </Project>

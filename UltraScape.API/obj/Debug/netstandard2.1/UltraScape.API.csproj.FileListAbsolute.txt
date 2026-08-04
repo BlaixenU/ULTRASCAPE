@@ -8,3 +8,4 @@ C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape.API\ob
 C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape.API\obj\Debug\netstandard2.1\UltraScape.API.csproj.CoreCompileInputs.cache
 C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape.API\obj\Debug\netstandard2.1\UltraScape.API.dll
 C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape.API\obj\Debug\netstandard2.1\UltraScape.API.pdb
+C:\Users\Ali_K\OneDrive\Documents\ULTRAKILL Modding\ULTRASCAPE\UltraScape.API\obj\Debug\netstandard2.1\UltraScape.API.sourcelink.json

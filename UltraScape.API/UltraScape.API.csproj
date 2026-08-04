@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <Target Name="CopyIntoRude" AfterTargets="Build">
-    <Copy SourceFiles="bin\Debug\netstandard2.1\UltraScape.API.dll"
-          DestinationFolder="F:\RudeLE17D4\Rude\Assets\BlaixenU\Mods\Nullscape">
+    <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.API.dll"
+          DestinationFolder="F:/RudeLE17D4/Rude/Assets/BlaixenU/Mods/Nullscape">
     </Copy>
   </Target>
 

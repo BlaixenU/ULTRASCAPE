@@ -54,9 +54,16 @@
     <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.dll"
           DestinationFolder="$(ModDir)">
     </Copy>
-    <Copy SourceFiles="../Assets/ultrascape.bundle"
+    <Copy SourceFiles="../Assets/ultrascape"
           DestinationFolder="$(ModDir)">
     </Copy>
   </Target>
 
+  <ItemGroup>
+    <Compile Include="../UltraScape.API/Enemies/**/*.cs"></Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <DoNotPublicize Include="UnityEngine.CoreModule:UnityEngine.SceneManagement.SceneManager.sceneLoaded" />
+  </ItemGroup>
 </Project>

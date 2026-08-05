@@ -52,7 +52,7 @@ public class Plugin : BaseUnityPlugin
             Log(enemy.name);
         }
 
-        // SceneManager.sceneLoaded += OnSceneLoad;
+        SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     void AddEnemies()
@@ -69,7 +69,7 @@ public class Plugin : BaseUnityPlugin
         bestiary.enemies = [.. bestiary.enemies, .. SpawnableEnemies];
         Log("Adding enemies to bestiary success");
 
-        return;
+        // return;
 
         Log("starting adding enemies to sandbox");
 
@@ -104,6 +104,6 @@ public static class Patches
     [HarmonyPatch(typeof(Revolver), nameof(Revolver.Shoot))]
     public static void UNLEASHTHEINFANT(Revolver __instance)
     {
-        UnityEngine.Object.Instantiate(Plugin.Baby, NewMovement.Instance.transform.position, Quaternion.identity);
+        UnityEngine.Object.Instantiate(Plugin.Baby, NewMovement.Instance.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
     }
 }

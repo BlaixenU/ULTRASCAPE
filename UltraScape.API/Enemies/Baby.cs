@@ -11,14 +11,13 @@ namespace UltraScape.API.Enemies
 
 		public GameObject chargeSound;
 
-		public HurtZone hurtZone;
-
 		[Space]
+		[SerializeField]
+		private AnimationCurve chargeCurve;
+
 		public float chargeDistance;
 
 		public float chargeDuration;
-
-		public float ChargeSpeed => chargeDistance / chargeDuration;
 
 		private double chargeStartTime;
 
@@ -36,23 +35,15 @@ namespace UltraScape.API.Enemies
 
 		public double TimeSinceIdleStart => Time.realtimeSinceStartupAsDouble - idleStartTime;
 
-		private bool transitionIn;
+		private Vector3 chargeStartPos;
+
+		private Vector3 attackVector;
 
 		public BabyState BabyState { get; private set; }
 
 		void Start()
 		{
-			if (hurtZone == null)
-			{
-				hurtZone = GetComponent<HurtZone>();
-			}
-
 			EnterIdle();
-
-			transitionIn = true;
-
-			SyncState();
-			hurtZone.enabled = true;
 		}
 
 		private void Update()
@@ -87,6 +78,9 @@ namespace UltraScape.API.Enemies
 					{
 						EnterIdle();
 					}
+
+					transform.position = chargeStartPos + (attackVector * chargeCurve.Evaluate((float)((Time.realtimeSinceStartup - chargeStartTime) / chargeDuration)));
+
 					break;
 				default:
 					SetState(BabyState.Idle);
@@ -115,6 +109,12 @@ namespace UltraScape.API.Enemies
 			SetState(BabyState.LockOn);
 			Instantiate(lockOnSound, gameObject.transform);
 			lockOnStartTime = Time.realtimeSinceStartupAsDouble;
+
+			chargeStartPos = transform.position;
+
+			var playerPos = NewMovement.Instance.transform.position;
+
+			attackVector = Quaternion.LookRotation(playerPos - chargeStartPos) * Vector3.forward * chargeDistance;
 		}
 
 		private void EnterCharge()

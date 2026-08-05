@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1608060634
+CRC: 3908989115
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: de5ef9790080d67e601a79bed1844d13
+    Hash: a083d0e1d021f9299256671393225c16
   TypeTreeHash:
     serializedVersion: 2
-    Hash: cec13812eb16c15aeaade4e3987dc93d
+    Hash: d46a71f35c8701f5271e0da778772bf3
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: de5ef9790080d67e601a79bed1844d13
+    Hash: a083d0e1d021f9299256671393225c16
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -37,9 +37,9 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 8d5035e6d21190b4447059c5fbea2e54, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: b9540fd89e9cf1ba12893fe51f085e17, type: 3}
+  Script: {fileID: 11500000, guid: 947524e96a511aa361c3aa7a2a8ee786, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 67c7f83e2a740a1d9fe5b2bcf345fe27, type: 3}
+  Script: {fileID: 11500000, guid: b9540fd89e9cf1ba12893fe51f085e17, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4708c415919e54dc0c3d7852df01e6d9, type: 3}
 - Class: 114
@@ -47,7 +47,7 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: c410490b960404d9c6e0dc8795b2f1e9, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: cc69443bae191bc46bf698adbaf4be3a, type: 3}
+  Script: {fileID: -291239098, guid: 7b2e1d1440b55fd4fa3b72b55ea739d1, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 135
@@ -62,17 +62,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 245
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers:
-- AssemblyName: Assembly-CSharp
-  ClassName: UltrakillEvent
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.ArgumentCache
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentCallGroup
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentListenerMode
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.UnityEvent
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Idle.anim
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Preview.prefab

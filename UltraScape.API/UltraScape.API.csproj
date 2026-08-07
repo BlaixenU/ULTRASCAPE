@@ -25,9 +25,20 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="CopyIntoRude" AfterTargets="Build">
+  <!-- <Target Name="CopyIntoRude" AfterTargets="Build">
     <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.API.dll"
           DestinationFolder="F:/RudeLE17D4/Rude/Assets/BlaixenU/Mods/Nullscape">
+    </Copy>
+  </Target> -->
+
+  <ItemGroup>
+    <SourceFilesToCopy Include="Enemies/Baby.cs"></SourceFilesToCopy>
+    <SourceFilesToCopy Include="Enemies/BabyTrail.cs"></SourceFilesToCopy>
+  </ItemGroup>
+
+  <Target Name="CopySourceIntoRude" AfterTargets="Build">
+    <Copy SourceFiles="@(SourceFilesToCopy)"
+          DestinationFolder="F:/RudeLE17D4/Rude/Assets/BlaixenU/Mods/Nullscape/asmdef">
     </Copy>
   </Target>
 

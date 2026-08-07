@@ -2,90 +2,116 @@ using UnityEngine;
 
 namespace UltraScape.API.Enemies
 {
-	
 	public class Baby : MonoBehaviour
 	{
-		public Animator Animator => gameObject.GetComponent<Animator>();
+		public GameObject? lockOnSound;
 
-		public GameObject lockOnSound;
+		public GameObject? chargeSound;
 
-		public GameObject chargeSound;
+		public GameObject? trailObject;
+
+		private Animator? animator;
 
 		[Space]
 		[SerializeField]
-		private AnimationCurve chargeCurve;
+		private AnimationCurve? chargeCurve;
 
-		public float chargeDistance;
+		[Header("Cooldowns")]
+		public float chargeDistance = 50;
 
-		public float chargeDuration;
+		public float chargeDuration = 1.5f;
 
-		private double chargeStartTime;
+		private float chargeTimer;
 
-		public double TimeSinceChargeStart => Time.realtimeSinceStartupAsDouble - chargeStartTime;
+		public float lockOnDuration = 0.75f;
 
-		public double lockOnDuration;
+		private float lockOnTimer;
 
-		private double lockOnStartTime;
+		public float idleDuration = 0.1f;
 
-		public double TimeSinceLockOnStart => Time.realtimeSinceStartupAsDouble - lockOnStartTime;
-
-		public double idleDuration;
-
-		private double idleStartTime;
-
-		public double TimeSinceIdleStart => Time.realtimeSinceStartupAsDouble - idleStartTime;
+		private float idleTimer;
 
 		private Vector3 chargeStartPos;
 
 		private Vector3 attackVector;
 
+		private BabyTrail trailInstance; // most of the time null
+
 		public BabyState BabyState { get; private set; }
+
+		void Awake()
+		{
+			animator = GetComponent<Animator>();
+		}
+		
+
 
 		void Start()
 		{
+			ResetCooldowns();
 			EnterIdle();
 		}
 
 		private void Update()
 		{
+			if (GetComponent<SphereCollider>())
+			{
+				GetComponent<SphereCollider>().enabled = true;
+			}
+
 			if (!NewMovement.Instance)
 			{
-				SetState(BabyState.Idle);
+				EnterIdle();
 				return;
 			}
 
 			switch (BabyState)
 			{
 				case BabyState.Idle:
+					
+					if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && idleTimer >= idleDuration)
 					{
-						if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-						{
-							if (TimeSinceIdleStart >= idleDuration)
-							{
-								EnterLockOn();
-							}
-						}
-						break;
+						EnterLockOn();
 					}
+
+					idleTimer += Time.deltaTime * Time.timeScale;
+						
+					break;
+					
 				case BabyState.LockOn:
-					if (TimeSinceLockOnStart >= lockOnDuration)
+
+					if (lockOnTimer >= lockOnDuration)
 					{
 						EnterCharge();
 					}
+
+					lockOnTimer += Time.deltaTime * Time.timeScale;
+
+
 					break;
+
 				case BabyState.Charge:
-					if (TimeSinceChargeStart >= chargeDuration)
+
+					if (chargeTimer >= chargeDuration)
 					{
 						EnterIdle();
 					}
 
-					transform.position = chargeStartPos + (attackVector * chargeCurve.Evaluate((float)((Time.realtimeSinceStartup - chargeStartTime) / chargeDuration)));
+					chargeTimer += Time.deltaTime * Time.timeScale;
+
+
+					var distanceFactorFromCurve = chargeCurve.Evaluate(chargeTimer / chargeDuration);
+
+					transform.position = chargeStartPos + (attackVector * distanceFactorFromCurve);
 
 					break;
+
 				default:
+
 					SetState(BabyState.Idle);
 					ResetCooldowns();
 					break;
+
 			}
 		}
 
@@ -93,9 +119,9 @@ namespace UltraScape.API.Enemies
 		{
 		}
 
-		private void SyncState()
+		public void SyncState()
 		{
-			Animator.SetInteger("BabyState", (int)BabyState);
+			animator.SetInteger("BabyState", (int)BabyState);
 		}
 
 		private void SetState(BabyState state)
@@ -108,33 +134,53 @@ namespace UltraScape.API.Enemies
 		{
 			SetState(BabyState.LockOn);
 			Instantiate(lockOnSound, gameObject.transform);
-			lockOnStartTime = Time.realtimeSinceStartupAsDouble;
+			lockOnTimer = 0;
 
 			chargeStartPos = transform.position;
 
 			var playerPos = NewMovement.Instance.transform.position;
 
 			attackVector = Quaternion.LookRotation(playerPos - chargeStartPos) * Vector3.forward * chargeDistance;
+
+			trailInstance = PrepareTrail(chargeStartPos, chargeStartPos + attackVector);
+
+
 		}
 
 		private void EnterCharge()
 		{
 			SetState(BabyState.Charge);
 			Instantiate(chargeSound, gameObject.transform);
-			chargeStartTime = Time.realtimeSinceStartupAsDouble;
+			chargeTimer = 0;
+
+			if (trailInstance != null)
+			{
+				trailInstance.State = TrailState.fade;
+			}
 		}
 
 		private void EnterIdle()
 		{
 			SetState(BabyState.Idle);
-			idleStartTime = Time.realtimeSinceStartupAsDouble;
+			idleTimer = 0;
 		}
 
-		private void ResetCooldowns()
+		public void ResetCooldowns()
 		{
-			chargeStartTime = 0f;
-			lockOnStartTime = 0f;
-			idleStartTime = 0f;
+			chargeTimer = 0;
+			idleTimer = 0;
+			lockOnTimer = 0;
+		}
+
+		public BabyTrail PrepareTrail(Vector3 startPos, Vector3 endPos)
+		{
+			var trail = Instantiate(trailObject);
+			var lr = trail.GetComponent<LineRenderer>();
+			
+			lr.SetPosition(0, startPos);
+			lr.SetPosition(1, endPos);
+
+			return trail.GetComponent<BabyTrail>();
 		}
 	}
 

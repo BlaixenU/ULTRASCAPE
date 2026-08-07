@@ -201,7 +201,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UltraScape.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0a15435c3280975a6d40ee7bce36389bf8c1f7c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c13aec2a5e73ff29b4064aee0411dca29df8b0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("UltraScape.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UltraScape.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -3,13 +3,14 @@ using BepInEx.Logging;
 using UnityEngine;
 using HarmonyLib;
 using System.IO;
-using UltraScape.API.Enemies;
+using UltraScape.Enemies;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace UltraScape;
 
-static public class PluginInfo {
+static public class PluginInfo
+{
     public const string PLUGIN_GUID = "com.blaixenu.ultrascape";
     public const string PLUGIN_NAME = "ULTRASCAPE";
     public const string PLUGIN_VERSION = "1.0.0";
@@ -23,12 +24,12 @@ public class Plugin : BaseUnityPlugin
     public static string ModDir => Path.GetDirectoryName(typeof(Plugin).Assembly.Location);
 
     public static AssetBundle Bundle = AssetBundle.LoadFromFile($"{ModDir}/ultrascape");
-        
+
     public static SpawnableObject[] SpawnableEnemies = Bundle.LoadAllAssets<SpawnableObject>();
 
-    public static GameObject Baby = Bundle.LoadAsset<GameObject>("Baby");
-
     private static bool hasAddedEnemies = false;
+
+    private static bool DEBUG_MODE = false;
 
     private void Awake()
     {
@@ -91,19 +92,12 @@ public class Plugin : BaseUnityPlugin
     }
 
 
-    private void Log(string log)
+    public static void Log(string log)
     {
+        if (DEBUG_MODE == false)
+        {
+            return;
+        }
         Logger.LogInfo(log); // I DONT LIKE TYPING ALLAT
-    }
-}
-
-[HarmonyPatch]
-public static class Patches
-{
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(Revolver), nameof(Revolver.Shoot))]
-    public static void UNLEASHTHEINFANT()
-    {
-        var baby = UnityEngine.Object.Instantiate(Plugin.Baby, NewMovement.Instance.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
     }
 }

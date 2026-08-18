@@ -2,7 +2,4 @@
   <Folder Name="/UltraScape/">
     <Project Path="UltraScape/UltraScape.csproj" />
   </Folder>
-  <Folder Name="/UltraScapeAPI/">
-    <Project Path="UltraScape.API/UltraScape.API.csproj" />
-  </Folder>
 </Solution>

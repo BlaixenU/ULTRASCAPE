@@ -1,46 +1,86 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace UltraScape.Enemies
 {
-    public class FlyingEntity : MonoBehaviour
+    public class FlyingEnemy : MonoBehaviour
     {
-        public bool shouldDrift = false;
+        // dont forget that for body sound loop you can just add an audio source child xd
+
+        [Header("Drift")]
+        public bool drift = true;
 
         public float driftRate = 0.0f;
 
+        [Space(10f)]
+
+        [Header("Displacement")]
+        public float displacementDistance;
+
+        public float displacementTime;
+
         public AnimationCurve displacementGraph = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
 
-        public UltrakillEvent onDisplace = null!;
-
-        private float displacementTimer;
-
-        private float displacementDistance;
-
-        private NewMovement player => NewMovement.Instance!;
+        [Space(5f)]
+        public UnityEvent onDisplacementStart = null!;
+        public UnityEvent onDisplacementEnd = null!;
 
         [HideInInspector]
-        public bool isDisplacing = false;
+        public bool displacing = false;
 
-
-
-        private void Start()
+        private void Awake()
         {
-            isDisplacing = false;
+            displacing = false;
         }
 
         private void Update()
         {
-            if (player && shouldDrift)
+            if (!NewMovement.Instance) return;
+
+            if (drift && driftRate != 0 && !displacing)
             {
-                DoDrift();
+                Drift(NewMovement.Instance!.transform.position, driftRate * Time.deltaTime * Time.timeScale);
             }
         }
 
-        private void DoDrift()
+        private void Drift(Vector3 targetPosition, float magnitude)
         {
-            transform.position = Quaternion.LookRotation(player.transform.position - transform.position) * new Vector3(0, 0, 1) * driftRate;
+            transform.position += Quaternion.LookRotation(targetPosition - transform.position) * Vector3.forward * magnitude;
         }
 
-        public void Displace() { } // write later when i need to 
+        public void Displace(Vector3 destination)
+        {
+            if (displacing) return;
+
+            StartCoroutine(DisplaceRoutine(destination));
+        }
+
+        private IEnumerator DisplaceRoutine(Vector3 destination)
+        {
+            displacing = true;
+
+            float totalTime = 0;
+
+            Vector3 startPos = transform.position;
+
+            Vector3 travelVector = destination - startPos;
+
+            onDisplacementStart.Invoke();
+
+            while (totalTime < displacementTime)
+            {
+                var timeNormalized = totalTime / displacementTime;
+
+                transform.position = startPos + (displacementGraph.Evaluate(timeNormalized) * travelVector);
+
+                yield return new WaitForSeconds(Time.fixedDeltaTime);
+                totalTime += Time.fixedDeltaTime;
+            }
+
+            displacing = false;
+
+            onDisplacementEnd.Invoke();
+        }
     }
 }

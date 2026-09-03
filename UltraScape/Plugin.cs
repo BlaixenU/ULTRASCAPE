@@ -2,102 +2,119 @@ using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
 using HarmonyLib;
-using System.IO;
-using UltraScape.Enemies;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Linq;
 
-namespace UltraScape;
-
-static public class PluginInfo
+namespace UltraScape
 {
-    public const string PLUGIN_GUID = "com.blaixenu.ultrascape";
-    public const string PLUGIN_NAME = "ULTRASCAPE";
-    public const string PLUGIN_VERSION = "1.0.0";
-}
-
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-public class Plugin : BaseUnityPlugin
-{
-    internal static new ManualLogSource Logger { get; private set; } = null!;
-
-    public static string ModDir => Path.GetDirectoryName(typeof(Plugin).Assembly.Location);
-
-    public static AssetBundle Bundle = AssetBundle.LoadFromFile($"{ModDir}/ultrascape");
-
-    public static SpawnableObject[] SpawnableEnemies = Bundle.LoadAllAssets<SpawnableObject>();
-
-    private static bool hasAddedEnemies = false;
-
-    private static bool DEBUG_MODE = false;
-
-    private void Awake()
+    static public class PluginInfo
     {
-        // Plugin startup logic
-        Logger = base.Logger;
-        Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-        gameObject.hideFlags = HideFlags.DontSaveInEditor;
-
-        var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
-        harmony.PatchAll();
-
-        // add to bestiary / spawner arm
-
-        Log("Harmony patching completed.");
-
-        Log($"ModDir: {ModDir}");
-
-        Log("Assets found in bundle:");
-        foreach (var enemy in Bundle.LoadAllAssets())
-        {
-            Log(enemy.name);
-        }
-
-        SceneManager.sceneLoaded += OnSceneLoad;
+        public const string PLUGIN_GUID = "com.blaixenu.ultrascape";
+        public const string PLUGIN_NAME = "ULTRASCAPE";
+        public const string PLUGIN_VERSION = "0.1.0";
     }
 
-    void AddEnemies()
+    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    public class Plugin : BaseUnityPlugin
     {
-        hasAddedEnemies = true;
+        internal static new ManualLogSource Logger { get; private set; } = null!;
 
-        Log("Starting adding enemies to bestiary");
+        public static string ModDir => Path.GetDirectoryName(typeof(Plugin).Assembly.Location);
 
-        Log("Loading bestiary");
-        SpawnableObjectsDatabase bestiary = Addressables.LoadAssetAsync<SpawnableObjectsDatabase>("Assets/Data/Bestiary Database.asset").WaitForCompletion();
-        Log("Loading bestiary success");
+        private static bool hasAddedEnemies = false;
 
-        Log("Adding enemies to bestiary");
-        bestiary.enemies = [.. bestiary.enemies, .. SpawnableEnemies];
-        Log("Adding enemies to bestiary success");
+        private static readonly bool DEBUG_MODE = true;
 
-        // return;
-
-        Log("starting adding enemies to sandbox");
-
-        Log("Loading sandbox");
-        SpawnableObjectsDatabase sandbox = Addressables.LoadAssetAsync<SpawnableObjectsDatabase>("Assets/Data/Sandbox/Spawnable Objects Database.asset").WaitForCompletion();
-        Log("Loading sandbox success");
-
-        Log("Adding enemies to sandbox");
-        sandbox.enemies = [.. sandbox.enemies, .. SpawnableEnemies];
-        Log("Adding enemies to sandbox success");
-    }
-
-    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
-    {
-        if (hasAddedEnemies == false)
+        private void Awake()
         {
-            AddEnemies();
+            // Plugin startup logic
+            Logger = base.Logger;
+            Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            gameObject.hideFlags = HideFlags.DontSaveInEditor;
+
+            var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+            harmony.PatchAll();
+
+            // add to bestiary / spawner arm
+
+            Log("Harmony patching completed.");
+
+            Log($"ModDir: {ModDir}");
+
+            Log("Assets found in bundle:");
+            foreach (var enemy in Assetloader.Bundle.LoadAllAssets())
+            {
+                Log(enemy.name);
+            }
+
+            SceneManager.sceneLoaded += OnSceneLoad;
         }
-    }
 
-
-    public static void Log(string log)
-    {
-        if (DEBUG_MODE == false)
+        void AddEnemies()
         {
-            return;
+            hasAddedEnemies = true;
+
+            Log("Starting adding enemies to bestiary");
+
+            Log("Loading bestiary");
+            SpawnableObjectsDatabase bestiary = Addressables.LoadAssetAsync<SpawnableObjectsDatabase>("Assets/Data/Bestiary Database.asset").WaitForCompletion();
+            Log("Loading bestiary success");
+
+            Log("Adding enemies to bestiary");
+            bestiary.enemies = bestiary.enemies.ToArray().Concat(Assetloader.SpawnableEnemies.ToArray()).ToArray();
+
+            Log("Adding enemies to bestiary success");
+
+            // return;
+
+            Log("starting adding enemies to sandbox");
+
+            Log("Loading sandbox");
+            SpawnableObjectsDatabase sandbox = Addressables.LoadAssetAsync<SpawnableObjectsDatabase>("Assets/Data/Sandbox/Spawnable Objects Database.asset").WaitForCompletion();
+            Log("Loading sandbox success");
+
+            Log("Adding enemies to sandbox");
+            sandbox.enemies = sandbox.enemies.ToArray().Concat(Assetloader.SpawnableEnemies.ToArray()).ToArray();
+
+            Log("Adding enemies to sandbox success");
         }
-        Logger.LogInfo(log); // I DONT LIKE TYPING ALLAT
+
+        private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            if (hasAddedEnemies == false)
+            {
+                AddEnemies();
+            }
+
+            var eman = new GameObject("UltraScape");
+            eman.transform.position = new(0, 0, 0);
+            eman.AddComponent<Enemies.EnemyManager>();
+        }
+
+
+        public static void Log<T>(T log)
+        {
+            if (DEBUG_MODE == false)
+            {
+                return;
+            }
+            Logger.LogInfo(log);
+        }
+
+        public static void Log<T>(T[] log)
+        {
+            if (DEBUG_MODE == false)
+            {
+                return;
+            }
+
+
+            foreach (T element in log)
+            {
+                Logger.LogInfo(element);
+            }
+        }
     }
 }

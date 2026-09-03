@@ -205,7 +205,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37758dfe97eb40e53d7ae0cddab6d3aef1eb30b3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63dc19bd7207c0ac57936e014f488a61252ce814")]
 [assembly: System.Reflection.AssemblyProductAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

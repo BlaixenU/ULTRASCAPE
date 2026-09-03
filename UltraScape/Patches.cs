@@ -17,7 +17,21 @@ namespace UltraScape
         [HarmonyPatch(typeof(EndlessGrid), nameof(EndlessGrid.NextWave))]
         public static void WaveChangeTracker(ref EndlessGrid __instance)
         {
-            EnemyManager.Instance!.WaveChange(__instance.currentWave);
+            if ((bool)(EnemyManager.Instance?.EndlessEnabled)!)
+            {
+                EnemyManager.Instance?.WaveChange(__instance.currentWave);
+            }
+
+            Plugin.Log($"Wave Change to {__instance.currentWave} detected.");
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(LeaderboardController), nameof(LeaderboardController.CanSubmitScores), MethodType.Getter)]
+        private static void ScoresSubmission(ref bool __result)
+        {
+            if (SceneHelper.CurrentScene == "Endless" && (bool)EnemyManager.Instance?.EndlessEnabled!)
+            {
+                __result = false;
+            }
         }
     }
 }

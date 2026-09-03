@@ -28,7 +28,7 @@ namespace UltraScape.Enemies
         [HideInInspector]
         public bool fading;
 
-        private MaterialPropertyBlock propBlock = new();
+        private MaterialPropertyBlock propBlock = null!;
 
         private static readonly int tilingPropertyID = Shader.PropertyToID("_MainTex_ST");
 

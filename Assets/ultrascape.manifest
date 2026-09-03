@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1395356663
+CRC: 3535977611
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e25e9fd235ab012c1b1bb1f05b79cdc0
+    Hash: 132b78c92f0ddd04491350078489b5b8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3e3aa324a2d70eb41e8bbeb93199c2ad
+    Hash: 8ffccf94b3f76e969de76feb8ef5457b
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e25e9fd235ab012c1b1bb1f05b79cdc0
+    Hash: 132b78c92f0ddd04491350078489b5b8
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -37,23 +37,29 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 8d5035e6d21190b4447059c5fbea2e54, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 387517cfb90118642bc8fdf9489b767f, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 8d6a5beaeeccfff47b67e7a7e06944c8, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: b9540fd89e9cf1ba12893fe51f085e17, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: de3d675e4c8ef9742857183b830ee1b8, type: 3}
+  Script: {fileID: 11500000, guid: b9e65cfd8958baa591db23f9d8998ec4, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 67c7f83e2a740a1d9fe5b2bcf345fe27, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4708c415919e54dc0c3d7852df01e6d9, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 836155112e1222f4c97b6f6b1f0ca646, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: e07e7aa04a3dcfacc826789b2d1e8174, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: c410490b960404d9c6e0dc8795b2f1e9, type: 3}
+- Class: 114
+  Script: {fileID: -1202816503, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: -1938683292, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: 1727087956, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: -1648073445, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: -1109775736, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: 10438429, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 120
@@ -74,13 +80,18 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: UltrakillEvent
 - AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.ArgumentCache
+- AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentListenerMode
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.UnityEvent
 Assets:
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Idle.anim
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/BabyTrail.png
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Transition.anim
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger_Walk_Patch5.ogg
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/preview_icon.png
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/LockOn.anim
@@ -97,7 +108,13 @@ Assets:
 - Assets/BlaixenU/Mods/Nullscape/Shaders/UnlitTransparentCutoutAlpha.shadergraph
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Bestiary.asset
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Flash.prefab
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger.anim
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger_Spritesheet_0.controller
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger_Spritesheet.png
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Teleport.mp3
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Indicator.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/BabyCharge.prefab
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/TelefraggerAttack.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby_Alarm.ogg
 Dependencies: []

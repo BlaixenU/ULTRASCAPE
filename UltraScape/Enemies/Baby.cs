@@ -2,17 +2,29 @@ using UnityEngine;
 
 namespace UltraScape.Enemies
 {
-	public class Baby : MonoBehaviour
+	public enum BabyState
+	{
+		Idle,
+		LockOn,
+		Charge
+	}
+
+	public class Baby : Enemy
 	{
 		[Header("Asset References")]
 		public GameObject lockOnSound = null!;
 
 		public GameObject chargeSound = null!;
 
+		[Space(5f)]
 		public GameObject trailObject = null!;
 
 		public GameObject lockOnFlashObject = null!;
 
+		[Space(5f)]
+		public GameObject normalEffects = null!;
+
+		public GameObject chargeEffects = null!;
 
 		private GameObject lockOnFlashInstance = null!;
 
@@ -20,9 +32,10 @@ namespace UltraScape.Enemies
 
 		private Enemy enemy = null!;
 
-		[Space]
+		[Space(10f)]
 		public AnimationCurve chargeCurve = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 
+		[Space(10f)]
 		[Header("Cooldowns")]
 		public float chargeDistance = 50;
 
@@ -44,34 +57,38 @@ namespace UltraScape.Enemies
 
 		private BabyTrail trailInstance = null!; // most of the time null
 
-		public BabyState BabyState { get; private set; }
+		public BabyState State { get; private set; }
 
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
+
 			animator = GetComponent<Animator>();
 			enemy = GetComponent<Enemy>();
-		}
 
-		private void Start()
-		{
 			ResetCooldowns();
 			EnterIdle();
 		}
 
+		protected override void Start()
+		{
+			base.Start();
+
+			enemy.parryBox.enabled = false;
+
+			normalEffects.SetActive(true);
+			chargeEffects.SetActive(false);
+		}
+
 		private void Update()
 		{
-			if (GetComponent<SphereCollider>())
-			{
-				GetComponent<SphereCollider>().enabled = true;
-			}
-
 			if (!NewMovement.Instance)
 			{
 				EnterIdle();
 				return;
 			}
 
-			switch (BabyState)
+			switch (State)
 			{
 				case BabyState.Idle:
 
@@ -126,22 +143,18 @@ namespace UltraScape.Enemies
 			}
 		}
 
-		private void FixedUpdate()
-		{
-		}
-
 		public void SyncState()
 		{
-			animator.SetInteger("BabyState", (int)BabyState);
+			animator.SetInteger("BabyState", (int)State);
 		}
 
-		public void SetState(BabyState state)
+		private void SetState(BabyState _state)
 		{
-			BabyState = state;
+			State = _state;
 			SyncState();
 		}
 
-		private void EnterLockOn()
+		public void EnterLockOn()
 		{
 			SetState(BabyState.LockOn);
 			Instantiate(lockOnSound, gameObject.transform);
@@ -151,7 +164,8 @@ namespace UltraScape.Enemies
 
 			var playerPos = NewMovement.Instance!.transform.position;
 
-			attackVector = Quaternion.LookRotation(playerPos - chargeStartPos) * Vector3.forward * chargeDistance;
+			// attackVector = Quaternion.LookRotation(playerPos - chargeStartPos) * Vector3.forward * chargeDistance;
+			attackVector = (playerPos - chargeStartPos).normalized * chargeDistance;
 
 			trailInstance = PrepareTrail(chargeStartPos, chargeStartPos + attackVector);
 
@@ -159,19 +173,29 @@ namespace UltraScape.Enemies
 			lockOnFlashInstance.transform.localPosition = new(0, 0, 0.1f);
 		}
 
-		private void EnterCharge()
+		public void EnterCharge()
 		{
 			SetState(BabyState.Charge);
 			Instantiate(chargeSound, gameObject.transform);
 			chargeTimer = 0;
 
 			trailInstance?.StartFade();
+
+			enemy.parryBox.enabled = true;
+
+			normalEffects.SetActive(false);
+			chargeEffects.SetActive(true);
 		}
 
-		private void EnterIdle()
+		public void EnterIdle()
 		{
 			SetState(BabyState.Idle);
 			idleTimer = 0;
+
+			enemy.parryBox.enabled = false;
+
+			normalEffects.SetActive(true);
+			chargeEffects.SetActive(false);
 		}
 
 		public void ResetCooldowns()
@@ -183,7 +207,7 @@ namespace UltraScape.Enemies
 
 		private BabyTrail PrepareTrail(Vector3 startPos, Vector3 endPos)
 		{
-			var trail = Instantiate(trailObject);
+			GameObject trail = Instantiate(trailObject);
 			var lr = trail.GetComponent<LineRenderer>();
 
 			lr.SetPosition(0, startPos);
@@ -192,21 +216,10 @@ namespace UltraScape.Enemies
 			return trail.GetComponent<BabyTrail>();
 		}
 
-		private void OnDestroy()
+		public GameObject EndlessSpawn()
 		{
-			if (lockOnFlashInstance)
-			{
-				Destroy(lockOnFlashInstance);
-			}
+			return Instantiate(EnemyManager.enemies[base.enemyType].prefab, EnemyManager.Instance!.transform);
 		}
 	}
-
-	public enum BabyState
-	{
-		Idle,
-		LockOn,
-		Charge
-	}
-
 }
 

@@ -3,25 +3,32 @@ using UnityEngine.Events;
 
 namespace UltraScape.Enemies
 {
-	public class Enemy : MonoBehaviour
+	public class Enemy : MonoBehaviour // make parent class of enemies, rather than parallel components
 	{
-		[Header("Interface with UltraScape.Enemies.EnemyManager")]
+		public USEnemyType enemyType;
+
+		[Space(10f)]
+		[Header("Triggers")]
+		public Collider hurtBox = null!;
+		public Collider parryBox = null!;
+
+		private ParryReceiver parryRec = null!;
+
+		[Space(10f)]
+		[Header("Events")]
 		public UnityEvent onCreate = null!;
-
 		public UnityEvent onDestroy = null!;
-
-		private USEnemyType enemyType;
 
 		private EnemyManager eman => EnemyManager.Instance!;
 
-		private void Awake()
+		protected virtual void Awake()
 		{
-			enemyType = GetEnemyType();
-
-			if (enemyType == USEnemyType.none)
+			if (parryBox)
 			{
-				Destroy(this);
+				parryRec = parryBox.GetComponent<ParryReceiver>();
 			}
+
+			gameObject.transform.SetParent(eman.transform);
 		}
 
 		public USEnemyType GetEnemyType()
@@ -33,29 +40,18 @@ namespace UltraScape.Enemies
 			return USEnemyType.none;
 		}
 
-		private void Start()
+		protected virtual void Start()
 		{
-			EnemyManager.Instance!.AddEnemy(gameObject, enemyType);
+			EnemyManager.Instance?.AddEnemy(gameObject, enemyType);
 
 			onCreate.Invoke();
 		}
 
-		private void OnDestroy()
+		protected virtual void OnDestroy()
 		{
-			EnemyManager.Instance!.RemoveEnemy(gameObject, enemyType);
+			EnemyManager.Instance?.RemoveEnemy(gameObject, enemyType);
 
 			onDestroy.Invoke();
 		}
-
-		public void Instantiate(GameObject targetObject) // helper to show in UnityEvents
-		{
-			Instantiate(targetObject, gameObject.transform);
-		}
-	}
-
-	public enum USEnemyType
-	{
-		none,
-		baby // dont add anything until im sure im adding it or i'll feel ashamed and quit working on this
 	}
 }

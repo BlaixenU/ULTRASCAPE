@@ -8,7 +8,7 @@ namespace UltraScape.Misc
 
         public float fadeSpeed;
 
-        public bool destroyOnComplete = true; 
+        public bool destroyOnComplete = true;
 
         [HideInInspector]
         public bool completed = false;
@@ -24,10 +24,10 @@ namespace UltraScape.Misc
             spr = GetComponent<SpriteRenderer>();
             if (spr == null)
             {
-                Destroy(this);
+                Destroy(gameObject);
             }
 
-            originalAlpha = spr.color.a;
+            originalAlpha = spr!.color.a;
             originalScale = transform.localScale;
 
             shrinkSpeed = Mathf.Clamp(shrinkSpeed, 0.0f, 100f);
@@ -72,7 +72,7 @@ namespace UltraScape.Misc
         {
             if (destroyOnComplete)
             {
-                Destroy(this);
+                Destroy(gameObject);
             }
         }
     }

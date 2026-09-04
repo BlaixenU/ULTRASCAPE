@@ -1,7 +1,7 @@
 
 namespace UltraScape.Enemies
 {
-    public static class Modifiers
+    public class Modifiers
     {
 
     }

@@ -2,13 +2,6 @@ using UnityEngine;
 
 namespace UltraScape.Enemies
 {
-	public enum BabyState
-	{
-		Idle,
-		LockOn,
-		Charge
-	}
-
 	public class Baby : Enemy
 	{
 		[Header("Asset References")]
@@ -55,9 +48,16 @@ namespace UltraScape.Enemies
 
 		private Vector3 attackVector;
 
-		private BabyTrail trailInstance = null!; // most of the time null
+		private BabyTrail trailInstance = null!;
 
 		public BabyState State { get; private set; }
+
+		public enum BabyState
+		{
+			Idle,
+			LockOn,
+			Charge
+		}
 
 		protected override void Awake()
 		{
@@ -214,11 +214,6 @@ namespace UltraScape.Enemies
 			lr.SetPosition(1, endPos);
 
 			return trail.GetComponent<BabyTrail>();
-		}
-
-		public GameObject EndlessSpawn()
-		{
-			return Instantiate(EnemyManager.enemies[base.enemyType].prefab, EnemyManager.Instance!.transform);
 		}
 	}
 }

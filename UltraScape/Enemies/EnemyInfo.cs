@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 using UnityEngine;
 
 namespace UltraScape.Enemies
@@ -18,15 +18,15 @@ namespace UltraScape.Enemies
 
         public readonly GameObject prefab;
 
-        public readonly int[] startingWave;
+        public readonly DifficultySettings<int> startingWave;
 
-        public readonly int[] maxStack;
+        public readonly DifficultySettings<int> maxStack;
 
         public List<GameObject> activeInstances;
 
         internal int spawnBuffer;
 
-        internal EnemyInfo(string Name, GameObject gameObject, int[] startingWaves, int[] maxStacks)
+        internal EnemyInfo(string Name, GameObject gameObject, DifficultySettings<int> startingWaves, DifficultySettings<int> maxStacks)
         {
             name = Name;
             prefab = gameObject;
@@ -36,4 +36,4 @@ namespace UltraScape.Enemies
             activeInstances = [];
         }
     }
-}
+} */

@@ -25,7 +25,7 @@ namespace UltraScape
 
         private static bool hasAddedEnemies = false;
 
-        private static readonly bool DEBUG_MODE = true;
+        private static readonly bool DEBUG_MODE = false;
 
         private void Awake()
         {
@@ -88,9 +88,7 @@ namespace UltraScape
                 AddEnemies();
             }
 
-            var eman = new GameObject("UltraScape");
-            eman.transform.position = new(0, 0, 0);
-            eman.AddComponent<Enemies.EnemyManager>();
+            Instantiate(Assetloader.enemyManager);
         }
 
 

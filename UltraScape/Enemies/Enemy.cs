@@ -5,7 +5,7 @@ namespace UltraScape.Enemies
 {
 	public class Enemy : MonoBehaviour // make parent class of enemies, rather than parallel components
 	{
-		public USEnemyType enemyType;
+		public EnemyScriptableObject enemyScriptableObject = null!;
 
 		[Space(10f)]
 		[Header("Triggers")]
@@ -31,25 +31,16 @@ namespace UltraScape.Enemies
 			gameObject.transform.SetParent(eman.transform);
 		}
 
-		public USEnemyType GetEnemyType()
-		{
-			if (GetComponent<Baby>())
-			{
-				return USEnemyType.baby;
-			}
-			return USEnemyType.none;
-		}
-
 		protected virtual void Start()
 		{
-			EnemyManager.Instance?.AddEnemy(gameObject, enemyType);
+			EnemyManager.Instance?.AddEnemy(gameObject, enemyScriptableObject);
 
 			onCreate.Invoke();
 		}
 
 		protected virtual void OnDestroy()
 		{
-			EnemyManager.Instance?.RemoveEnemy(gameObject, enemyType);
+			EnemyManager.Instance?.RemoveEnemy(gameObject, enemyScriptableObject);
 
 			onDestroy.Invoke();
 		}

@@ -2,38 +2,25 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using System.Reflection;
 
 namespace UltraScape.Enemies
 {
     [ConfigureSingleton(SingletonFlags.NoAutoInstance)]
     public class EnemyManager : MonoSingleton<EnemyManager>
     {
-        private bool _endlessEnabled;
+        public bool endlessEnabled;
 
-        public bool EndlessEnabled
-        {
-            get
-            {
-                return _endlessEnabled;
-            }
-            internal set
-            {
-                _endlessEnabled = value;
-            }
-        }
+        public int spawnQuantity = 2;
 
-        private readonly int spawnQuantity = 2;
+        public int spawnGap = 5;
 
-        private readonly int spawnGap = 5;
-
-        private readonly float spawnDelayIncrement = 1f;
+        public float spawnDelayIncrement = 1f;
 
         private bool InEndless => SceneHelper.CurrentScene == "Endless";
 
         private int timesSpawned;
 
-        private Queue<USEnemyType> enemyQueue = new();
+        private Queue<EnemyScriptableObject> enemyQueue = new();
 
         public static int NSDiff => PrefsManager.Instance?.GetInt("difficulty") switch
         {
@@ -42,41 +29,17 @@ namespace UltraScape.Enemies
             _ => 0
         };
 
-        /* [Obsolete]
-        public static readonly Dictionary<USEnemyType, EndlessSpawningData> spawningData = new()
-        {
-            [USEnemyType.baby] = new EndlessSpawningData(Assetloader.Baby, new int[] { 1, 1, 1 }, new int[] { 4, 4, 8 }),
-            [USEnemyType.telefragger] = new EndlessSpawningData(Assetloader.Telefragger, new int[] { 1, 1, 1 }, new int[] { 2, 2, 4 })
-        };
-
-        [Obsolete]
-        public Dictionary<USEnemyType, List<GameObject>> activeEnemies = new()
-        {
-            [USEnemyType.baby] = new(),
-            [USEnemyType.telefragger] = new()
-        }; */
-
-        public static Dictionary<USEnemyType, EnemyInfo> enemies = new()
-        {
-            [USEnemyType.baby] = new EnemyInfo("Baby", Assetloader.Baby, [1, 1, 1], [4, 4, 8]),
-            [USEnemyType.telefragger] = new EnemyInfo("Telefragger", Assetloader.Telefragger, [1, 1, 1], [2, 2, 4])
-        };
+        [NonSerialized]
+        public Dictionary<EnemyScriptableObject, EnemySceneInfo> enemies = [];
 
         private void Awake()
         {
-            EndlessEnabled = true;
-
             if (InEndless)
             {
                 timesSpawned = 0;
             }
 
-            gameObject.transform.position = new(0, 0, 0);
-
-            foreach (KeyValuePair<USEnemyType, EnemyInfo> kvp in enemies)
-            {
-                kvp.value.spawnBuffer = 0;
-            }
+            gameObject.transform.position = Vector3.zero;
         }
 
         internal void WaveChange(int newWave)
@@ -101,17 +64,17 @@ namespace UltraScape.Enemies
         {
             for (int i = 0; i < spawnQuantity; i++)
             {
-                List<USEnemyType> enemyPool = [];
+                List<EnemyScriptableObject> enemyPool = [];
 
-                foreach (KeyValuePair<USEnemyType, EnemyInfo> kvp in enemies)
+                foreach (KeyValuePair<EnemyScriptableObject, EnemySceneInfo> kvp in enemies)
                 {
-                    if ((batchWave >= kvp.value.startingWave[NSDiff]) && (enemies[kvp.key].activeInstances.Count + enemies[kvp.key].spawnBuffer) < kvp.value.maxStack[NSDiff])
+                    if ((batchWave >= kvp.Key.startingWaves.GetValue(NSDiff)) && (enemies[kvp.Key].activeInstances.Count + enemies[kvp.Key].spawnBuffer) < kvp.Key.maxStacks.GetValue(NSDiff))
                     {
-                        enemyPool.Add(kvp.key);
+                        enemyPool.Add(kvp.Key);
 
-                        enemies[kvp.key].spawnBuffer++;
+                        enemies[kvp.Key].spawnBuffer++;
 
-                        Plugin.Log($"{kvp.value.name} added to enemy pool.");
+                        Plugin.Log($"{kvp.Key.name} added to enemy pool.");
                     }
                 }
 
@@ -132,7 +95,7 @@ namespace UltraScape.Enemies
         {
             while (enemyQueue.Count > 0)
             {
-                USEnemyType nextEnemy = enemyQueue.Dequeue();
+                var nextEnemy = enemyQueue.Dequeue();
 
                 SpawnEnemy(nextEnemy);
 
@@ -142,31 +105,28 @@ namespace UltraScape.Enemies
             }
         }
 
-        private void SpawnEnemy(USEnemyType enemyType)
+        private void SpawnEnemy(EnemyScriptableObject enemyScriptableObject)
         {
-            GameObject enemyObject = enemies[enemyType].prefab;
+            GameObject enemyInstance = Instantiate(enemyScriptableObject.prefab, gameObject.transform);
 
-            GameObject enemyInstance = Instantiate(enemyObject, gameObject.transform);
-
-            TypeInfo typeInfo = typeof(enemyInstance.GetComponent<Enemy>()).GetTypeInfo();
-
-            // USE CUSTOM ATTRIBUTES TO DETERMINE ENEMY SPAWN TYPE. FOR NEW TYPES ADD LOGIC TO HERE. NO ITS NOT SPAGHETTI CODE SHUT YOUR ASS
-
-        }
-
-
-        public void AddEnemy(GameObject enemy, USEnemyType type)
-        {
-            enemies[type].activeInstances.Add(enemy);
-        }
-
-        public void RemoveEnemy(GameObject enemy, USEnemyType type)
-        {
-            for (int i = 0; i < enemies[type].activeInstances.Count; i++)
+            if (endlessEnabled && InEndless && enemyInstance.TryGetComponent(out ICustomEndlessSpawnable spawnable))
             {
-                if (enemies[type].activeInstances[i] == enemy)
+                spawnable.AfterSpawn();
+            }
+        }
+
+        public void AddEnemy(GameObject self, EnemyScriptableObject enemyScriptableObject)
+        {
+            enemies[enemyScriptableObject].activeInstances.Add(self);
+        }
+
+        public void RemoveEnemy(GameObject self, EnemyScriptableObject enemyScriptableObject)
+        {
+            for (int i = 0; i < enemies[enemyScriptableObject].activeInstances.Count; i++)
+            {
+                if (enemies[enemyScriptableObject].activeInstances[i] == self)
                 {
-                    enemies[type].activeInstances.RemoveAt(i);
+                    enemies[enemyScriptableObject].activeInstances.RemoveAt(i);
                     return;
                 }
             }

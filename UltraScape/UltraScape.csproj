@@ -6,9 +6,8 @@
     <LangVersion>default</LangVersion>
     <UltrakillDir>F:/Steam/steamapps/common/ULTRAKILL - Bepinex/</UltrakillDir>
     <ModDir>$(UltrakillDir)BepInEx/plugins/UltraScape/</ModDir>
-    <PublicizeAll>true</PublicizeAll>
     <CopyBundleToPlugins>true</CopyBundleToPlugins>
-    <CopyAssemblyToRude>true</CopyAssemblyToRude>
+    <CopyAssemblyToRude>false</CopyAssemblyToRude>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UltraScape.Enemies
 {
-    public class Telefragger : MonoBehaviour, IEndlessSpawnable
+    public class Telefragger : Enemy
     {
         public float cooldownTime = 6.1f;
 
@@ -28,8 +28,10 @@ namespace UltraScape.Enemies
 
         private List<Vector3> velocityVectors = new();
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             attacking = false;
         }
 
@@ -121,11 +123,6 @@ namespace UltraScape.Enemies
         {
             cooldownTimer = 0f;
             attackTimer = 0f;
-        }
-
-        public void EndlessSpawn()
-        {
-
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace UltraScape.Enemies
 {
-    public class FlyingEnemy : MonoBehaviour
+    public class AerialBody : MonoBehaviour
     {
         // dont forget that for body sound loop you can just add an audio source child xd
 
@@ -12,6 +12,11 @@ namespace UltraScape.Enemies
         public bool drift = true;
 
         public float driftRate = 0.0f;
+
+        [Space(5f)]
+        public bool targetPlayer = true;
+
+        public Transform target = null!;
 
         [Space(10f)]
 
@@ -29,6 +34,16 @@ namespace UltraScape.Enemies
         [HideInInspector]
         public bool displacing = false;
 
+        public Transform GetTarget
+        {
+            get
+            {
+                if (targetPlayer) return NewMovement.Instance!.transform;
+                if (target != null) return target;
+                return null!;
+            }
+        }
+
         private void Awake()
         {
             displacing = false;
@@ -40,7 +55,7 @@ namespace UltraScape.Enemies
 
             if (drift && driftRate != 0 && !displacing)
             {
-                Drift(NewMovement.Instance!.transform.position, driftRate * Time.deltaTime * Time.timeScale);
+                Drift(GetTarget.position, driftRate * Time.deltaTime * Time.timeScale);
             }
         }
 
@@ -51,12 +66,12 @@ namespace UltraScape.Enemies
 
         public void Displace(Vector3 destination)
         {
-            if (displacing) return;
+            StopCoroutine(nameof(DisplaceRoutine));
 
-            StartCoroutine(DisplaceRoutine(destination));
+            StartCoroutine(DisplaceRoutine(destination, displacementTime));
         }
 
-        private IEnumerator DisplaceRoutine(Vector3 destination)
+        private IEnumerator DisplaceRoutine(Vector3 destination, float duration)
         {
             displacing = true;
 
@@ -68,9 +83,9 @@ namespace UltraScape.Enemies
 
             onDisplacementStart.Invoke();
 
-            while (totalTime < displacementTime)
+            while (totalTime < duration)
             {
-                var timeNormalized = totalTime / displacementTime;
+                var timeNormalized = totalTime / duration;
 
                 transform.position = startPos + (displacementGraph.Evaluate(timeNormalized) * travelVector);
 

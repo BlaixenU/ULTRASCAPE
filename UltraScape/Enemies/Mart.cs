@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UltraScape.Enemies
 {
-    public class Mart : MonoBehaviour, IEndlessSpawnable
+    public class Mart : MonoBehaviour, ICustomEndlessSpawnable
     {
         public Collider mergeCollider = null!;
 
@@ -11,7 +11,7 @@ namespace UltraScape.Enemies
             mergeCollider = GetComponentInChildren<Collider>();
         }
 
-        public void EndlessSpawn()
+        public void AfterSpawn()
         {
 
         }

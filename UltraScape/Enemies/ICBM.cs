@@ -12,7 +12,7 @@ namespace UltraScape.Enemies
         falling
     }
 
-    public class ICBM : MonoBehaviour
+    public class ICBM : MonoBehaviour // i am SO not a fan of the coroutine state machine design pattern please do something else.
     {
         public GameObject fullSound = null!;
 

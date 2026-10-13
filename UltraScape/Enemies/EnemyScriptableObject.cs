@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UltraScape.Enemies
 {
+    [CreateAssetMenu(fileName = "EnemyScriptableObject", menuName = "ULTRASCAPE/EnemyScriptableObject")]
     public class EnemyScriptableObject : ScriptableObject
     {
         public string enemyName = null!;

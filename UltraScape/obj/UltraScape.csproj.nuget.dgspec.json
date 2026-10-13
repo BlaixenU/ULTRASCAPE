@@ -52,11 +52,11 @@
           "framework": "netstandard2.1",
           "targetAlias": "netstandard2.1",
           "dependencies": {
-            "Krafs.Publicizer": {
+            "BepInEx.AssemblyPublicizer.MSBuild": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[2.3.0, )"
+              "version": "[0.4.3, )"
             },
             "UnityEngine.Modules": {
               "include": "Compile",

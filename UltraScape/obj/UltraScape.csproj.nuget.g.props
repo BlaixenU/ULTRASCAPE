@@ -14,16 +14,16 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Language)' == 'C#' AND '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Compile Include="$(NuGetPackageRoot)krafs.publicizer\2.3.0\contentfiles\cs\any\Publicizer\IgnoresAccessChecksToAttribute.cs" Condition="Exists('$(NuGetPackageRoot)krafs.publicizer\2.3.0\contentfiles\cs\any\Publicizer\IgnoresAccessChecksToAttribute.cs')">
-      <NuGetPackageId>Krafs.Publicizer</NuGetPackageId>
-      <NuGetPackageVersion>2.3.0</NuGetPackageVersion>
+    <Compile Include="$(NuGetPackageRoot)bepinex.assemblypublicizer.msbuild\0.4.3\contentFiles\cs\any\IgnoresAccessChecksToAttribute.cs" Condition="Exists('$(NuGetPackageRoot)bepinex.assemblypublicizer.msbuild\0.4.3\contentFiles\cs\any\IgnoresAccessChecksToAttribute.cs')">
+      <NuGetPackageId>BepInEx.AssemblyPublicizer.MSBuild</NuGetPackageId>
+      <NuGetPackageVersion>0.4.3</NuGetPackageVersion>
       <NuGetItemType>Compile</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
-      <Link>Publicizer\IgnoresAccessChecksToAttribute.cs</Link>
+      <Link>IgnoresAccessChecksToAttribute.cs</Link>
     </Compile>
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)krafs.publicizer\2.3.0\build\Krafs.Publicizer.props" Condition="Exists('$(NuGetPackageRoot)krafs.publicizer\2.3.0\build\Krafs.Publicizer.props')" />
+    <Import Project="$(NuGetPackageRoot)bepinex.assemblypublicizer.msbuild\0.4.3\build\BepInEx.AssemblyPublicizer.MSBuild.props" Condition="Exists('$(NuGetPackageRoot)bepinex.assemblypublicizer.msbuild\0.4.3\build\BepInEx.AssemblyPublicizer.MSBuild.props')" />
   </ImportGroup>
 </Project>

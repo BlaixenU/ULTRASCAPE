@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 4154640253
+CRC: 2407437041
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 006c2d949d6d7aa5652b1a8f4acc7ec1
+    Hash: 3cc65059c84a19da424ced84b0fe7275
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8d198bbcfba0449efe9359b5e5fd708e
+    Hash: ed292294dd5cdba2eb571aa230ce98a4
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 006c2d949d6d7aa5652b1a8f4acc7ec1
+    Hash: 3cc65059c84a19da424ced84b0fe7275
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,9 +39,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 8d5035e6d21190b4447059c5fbea2e54, type: 3}
 - Class: 114
+  Script: {fileID: 618573799, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
   Script: {fileID: -1202816503, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
 - Class: 114
   Script: {fileID: -1938683292, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+- Class: 114
+  Script: {fileID: 1893213111, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
 - Class: 114
   Script: {fileID: -1109775736, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
 - Class: 114
@@ -57,7 +61,7 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: c410490b960404d9c6e0dc8795b2f1e9, type: 3}
 - Class: 114
-  Script: {fileID: 618573799, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
+  Script: {fileID: 1735478377, guid: 569c7ef66afa1e947be28ac50fa2b0a0, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 120
@@ -77,6 +81,8 @@ ClassTypes:
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: UltrakillEvent
+- AssemblyName: UltraScape
+  ClassName: UltraScape.Enemies.DifficultySettings`1[System.Int32]
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.ArgumentCache
 - AssemblyName: UnityEngine.CoreModule
@@ -87,6 +93,7 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Events.UnityEvent
 Assets:
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Idle.anim
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Info.asset
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/BabyTrail.png
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Transition.anim
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger_Walk_Patch5.ogg
@@ -96,13 +103,15 @@ Assets:
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/BabyLockOn.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby_Scream.ogg
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/spritesheet_full.png
+- Assets/BlaixenU/Mods/Nullscape/Enemies/Telefragger/Telefragger Info.asset
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Preview Variant.prefab
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Flash.png
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby.controller
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Charge.anim
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/preview_icon_2.png
-- Assets/BlaixenU/Mods/Nullscape/Shaders/UnlitTransparentCutout.shadersubgraph
+- Assets/BlaixenU/Mods/Nullscape/EnemyManager.prefab
 - Assets/BlaixenU/Mods/Nullscape/Shaders/UnlitTransparentCutout.mat
+- Assets/BlaixenU/Mods/Nullscape/Shaders/UnlitTransparentCutout.shadersubgraph
 - Assets/BlaixenU/Mods/Nullscape/Shaders/UnlitTransparentCutoutAlpha.shadergraph
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Bestiary.asset
 - Assets/BlaixenU/Mods/Nullscape/Enemies/Baby/Baby Flash.prefab

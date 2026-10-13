@@ -1,3 +1,4 @@
+using UltraScape.Enemies;
 using UnityEngine;
 
 namespace UltraScape
@@ -6,10 +7,14 @@ namespace UltraScape
     {
         internal static AssetBundle Bundle = AssetBundle.LoadFromFile($"{Plugin.ModDir}/ultrascape");
 
-        // enemies
+        // Enemies
 
         internal static SpawnableObject[] SpawnableEnemies = Bundle.LoadAllAssets<SpawnableObject>();
 
-        internal static GameObject enemyManager = Bundle.LoadAsset<GameObject>("EnemyManager Prefab");
+        internal static EnemyScriptableObject[] EnemyScriptableObjects = Bundle.LoadAllAssets<EnemyScriptableObject>();
+
+        // Managers
+
+        internal static GameObject enemyManager = Bundle.LoadAsset<GameObject>("EnemyManager");
     }
 }

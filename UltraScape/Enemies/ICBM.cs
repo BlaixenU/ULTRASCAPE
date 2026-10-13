@@ -73,7 +73,9 @@ namespace UltraScape.Enemies
 
         private void Start()
         {
-            StartCoroutine(Cooldown(2 * cooldown));
+            StateChange(ICBMState.cooldown);
+
+            timeSpentCooldown = -cooldown;
         }
 
         private void Update()
@@ -82,11 +84,27 @@ namespace UltraScape.Enemies
             {
                 case ICBMState.cooldown:
 
+                    if (timeSpentCooldown > cooldown)
+                    {
+                        StateChange(ICBMState.tracking);
+
+                        Instantiate(fullSound, transform);
+                    }
+
                     timeSpentCooldown += Time.deltaTime * Time.timeScale;
 
                     break;
 
                 case ICBMState.tracking:
+
+                    if (timeSpentTracking > trackingDuration)
+                    {
+                        StateChange(ICBMState.falling);
+
+                        missileInstance = Instantiate(missile);
+
+                        missileInstance.transform.position = transform.position + new Vector3(0, startHeight, 0);
+                    }
 
                     timeSpentTracking += Time.deltaTime * Time.timeScale;
 
@@ -111,6 +129,13 @@ namespace UltraScape.Enemies
 
                 case ICBMState.falling:
 
+                    if (timeSpentFalling > fallingDuration)
+                    {
+                        StateChange(ICBMState.cooldown);
+
+                        missileInstance = null!;
+                    }
+
                     timeSpentFalling += Time.deltaTime * Time.timeScale;
 
                     missileInstance?.transform.Translate(new(0, -startHeight / fallingDuration * Time.deltaTime * Time.timeScale, 0));
@@ -120,7 +145,7 @@ namespace UltraScape.Enemies
             }
         }
 
-        private IEnumerator Cooldown(float duration)
+        /* private IEnumerator Cooldown(float duration)
         {
             StateChange(ICBMState.cooldown);
 
@@ -157,7 +182,7 @@ namespace UltraScape.Enemies
             // Explode
 
             StartCoroutine(Cooldown(cooldown));
-        }
+        } */
 
         private void ResetTimers()
         {

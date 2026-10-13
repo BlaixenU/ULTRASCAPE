@@ -10,11 +10,10 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute("Assembly-CSharp")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8330a8fd20961c1f2c2874052c6b8b0a7a86657")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b894b052d666106073bff2ed30df14cbb9871ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UltraScape")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

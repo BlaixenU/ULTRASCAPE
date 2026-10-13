@@ -6,52 +6,32 @@
     <LangVersion>default</LangVersion>
     <UltrakillDir>F:/Steam/steamapps/common/ULTRAKILL - Bepinex/</UltrakillDir>
     <ModDir>$(UltrakillDir)BepInEx/plugins/UltraScape/</ModDir>
-    <CopyBundleToPlugins>true</CopyBundleToPlugins>
-    <CopyAssemblyToRude>false</CopyAssemblyToRude>
+    <CopyBundleToPlugins>true</CopyBundleToPlugins> <!-- trigger when 'true' -->
+    <CopyAssemblyToRude>true</CopyAssemblyToRude> <!-- trigger when 'true' -->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UnityEngine.Modules" Version="2022.3.29" IncludeAssets="compile" />
-    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.29" IncludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(UltrakillDir)ULTRAKILL_Data/Managed/Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocal>false</CopyLocal>
+    <Reference Include="Assembly-CSharp" Publicize="true">
+      <HintPath>$(UltrakillDir)ULTRAKILL_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="0Harmony">
-      <HintPath>$(UltrakillDir)BepInEx/core/0Harmony.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocal>false</CopyLocal>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>$(UltrakillDir)BepInEx/core/BepInEx.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocal>false</CopyLocal>
-    </Reference>
-    <Reference Include="Unity.Addressables">
-      <HintPath>$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.Addressables.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocal>false</CopyLocal>
-    </Reference>
-    <Reference Include="Unity.ResourceManager">
-      <HintPath>$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.ResourceManager.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocal>false</CopyLocal>
-    </Reference>
+    <Reference Include="$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.Addressables.dll" />
+    <Reference Include="$(UltrakillDir)ULTRAKILL_Data/Managed/Unity.ResourceManager.dll" />
+    <Reference Include="$(UltrakillDir)BepInEx/core/0Harmony.dll" />
+    <Reference Include="$(UltrakillDir)BepInEx/core/BepInEx.dll" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="Build">
-    <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.dll"
-      DestinationFolder="$(ModDir)">
+    <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.dll" DestinationFolder="$(ModDir)">
     </Copy>
-    <Copy SourceFiles="../Assets/ultrascape"
-      DestinationFolder="$(ModDir)"
+    <Copy SourceFiles="../Assets/ultrascape" DestinationFolder="$(ModDir)"
       Condition="$(CopyBundleToPlugins) == 'true'">
     </Copy>
     <Copy SourceFiles="bin/Debug/netstandard2.1/UltraScape.dll"
@@ -59,9 +39,4 @@
       Condition="$(CopyAssemblyToRude) == 'true'">
     </Copy>
   </Target>
-
-
-  <ItemGroup>
-    <Publicize Include="Assembly-CSharp" />
-  </ItemGroup>
 </Project>

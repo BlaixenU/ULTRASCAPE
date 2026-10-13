@@ -18,7 +18,7 @@ namespace UltraScape.Enemies
 
         private bool InEndless => SceneHelper.CurrentScene == "Endless";
 
-        private int timesSpawned;
+        private int timesSpawned = 0;
 
         private Queue<EnemyScriptableObject> enemyQueue = new();
 
@@ -29,7 +29,6 @@ namespace UltraScape.Enemies
             _ => 0
         };
 
-        [NonSerialized]
         public Dictionary<EnemyScriptableObject, EnemySceneInfo> enemies = [];
 
         private void Awake()
@@ -42,10 +41,26 @@ namespace UltraScape.Enemies
             gameObject.transform.position = Vector3.zero;
         }
 
+        private void Start()
+        {
+            foreach (var kvp in enemies)
+            {
+                Plugin.Log($"{kvp.Key.name}");
+                Plugin.Log($"{kvp.Key.prefab}");
+                var startingWaves = kvp.Key.startingWaves;
+                Plugin.Log($"{startingWaves.GetValue(0)}, {startingWaves.GetValue(1)}, {startingWaves.GetValue(2)}");
+                var maxStacks = kvp.Key.maxStacks;
+                Plugin.Log($"{maxStacks.GetValue(0)}, {maxStacks.GetValue(1)}, {maxStacks.GetValue(2)}");
+                Plugin.Log("");
+            }
+        }
+
         internal void WaveChange(int newWave)
         {
             if (timesSpawned == 0)
             {
+                Plugin.Log("Skipped waves detected, attempting to queue.");
+
                 for (int i = spawnGap; i < newWave - 1; i += spawnGap)
                 {
                     QueueBatch(i);
@@ -60,15 +75,30 @@ namespace UltraScape.Enemies
             StartCoroutine(SpawnQueue());
         }
 
-        private void QueueBatch(int batchWave)
+        private void QueueBatch(int waveForQueue)
         {
+            Plugin.Log($"Queueing for Wave {waveForQueue}");
+
             for (int i = 0; i < spawnQuantity; i++)
             {
                 List<EnemyScriptableObject> enemyPool = [];
 
                 foreach (KeyValuePair<EnemyScriptableObject, EnemySceneInfo> kvp in enemies)
                 {
-                    if ((batchWave >= kvp.Key.startingWaves.GetValue(NSDiff)) && (enemies[kvp.Key].activeInstances.Count + enemies[kvp.Key].spawnBuffer) < kvp.Key.maxStacks.GetValue(NSDiff))
+                    int startingWave = kvp.Key.startingWaves.GetValue(NSDiff);
+
+                    int maxStack = kvp.Key.maxStacks.GetValue(NSDiff);
+
+                    int activeInstances = kvp.Value.activeInstances.Count;
+
+                    int spawnBuffer = kvp.Value.spawnBuffer;
+
+                    Plugin.Log($"startingWave: {startingWave}");
+                    Plugin.Log($"maxStack: {maxStack}");
+                    Plugin.Log($"activeInstances: {activeInstances}");
+                    Plugin.Log($"spawnBuffer: {spawnBuffer}");
+
+                    if ((waveForQueue >= startingWave) && (activeInstances + spawnBuffer) < maxStack)
                     {
                         enemyPool.Add(kvp.Key);
 
@@ -93,6 +123,8 @@ namespace UltraScape.Enemies
 
         private IEnumerator SpawnQueue()
         {
+            Plugin.Log("Spawning queue");
+
             while (enemyQueue.Count > 0)
             {
                 var nextEnemy = enemyQueue.Dequeue();
@@ -107,6 +139,8 @@ namespace UltraScape.Enemies
 
         private void SpawnEnemy(EnemyScriptableObject enemyScriptableObject)
         {
+            Plugin.Log($"Spawning enemy: {enemyScriptableObject.name}");
+
             GameObject enemyInstance = Instantiate(enemyScriptableObject.prefab, gameObject.transform);
 
             if (endlessEnabled && InEndless && enemyInstance.TryGetComponent(out ICustomEndlessSpawnable spawnable))

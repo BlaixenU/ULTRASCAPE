@@ -25,7 +25,7 @@ namespace UltraScape
 
         private static bool hasAddedEnemies = false;
 
-        private static readonly bool DEBUG_MODE = false;
+        private static readonly bool DEBUG_MODE = true;
 
         private void Awake()
         {
@@ -88,7 +88,15 @@ namespace UltraScape
                 AddEnemies();
             }
 
-            Instantiate(Assetloader.enemyManager);
+            GameObject rootObject = new("ULTRASCAPE");
+
+            var enemyManager = Instantiate(Assetloader.enemyManager, rootObject.transform).GetComponent<Enemies.EnemyManager>();
+
+            foreach (var enemyScriptableObject in Assetloader.EnemyScriptableObjects)
+            {
+                enemyManager.enemies[enemyScriptableObject] = new();
+                Log($"{enemyScriptableObject.name} registered to EnemyManager");
+            }
         }
 
 
